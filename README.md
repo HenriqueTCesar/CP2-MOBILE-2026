@@ -30,8 +30,10 @@ O aplicativo foi estruturado para demonstrar o uso de componentes fundamentais e
 
 1. Certifique-se de ter o ambiente **React Native** (ou Expo) configurado.
 2. Clone este repositório.
-3. Execute `npm install` para baixar as dependências.
-4. Utilize `npx expo start` ou `npx react-native run-android` para iniciar o projeto.
+3. Cd CP1-MOBILE-2026/
+4. Cd FormularioCp1Mobile/
+5. Execute `npm install` para baixar as dependências.
+6. Utilize `npx expo start` ou `npx react-native run-android` para iniciar o projeto.
 
 ---
 *Este projeto faz parte de uma avaliação técnica de desenvolvimento mobile.*
