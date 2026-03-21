@@ -1,4 +1,4 @@
-# Projeto de Formulário React Native - Checkpoint 01
+# Projeto de Formulário React Native - Checkpoint 01 - Mobile Application Development
 
 Este repositório contém o código-fonte de um aplicativo mobile desenvolvido em React Native. O projeto implementa um formulário de cadastro interativo que processa e exibe dados dinamicamente na interface do usuário.
 
