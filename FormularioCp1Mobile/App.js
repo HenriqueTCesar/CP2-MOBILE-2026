@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, View, Text, TextInput, Button, StyleSheet, ScrollView, Image } from 'react-native';
 
-import RenderizarDados from './Components/RenderizarDados';
+import RenderizarDados from './components/RenderizarDados';
 
 export default function App() {
   const [nome, setNome] = useState('');
