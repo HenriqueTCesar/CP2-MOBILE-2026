@@ -8,23 +8,34 @@ export default function TelaPerfil({ route, navigation }) {
     <View style={styles.container}>
       <Image
         source={{ uri: "https://github.com/HenriqueTCesar.png" }}
-        style={styles.avatar}
+        style={styles.fotoPerfil}
       />
-      <Text style={styles.userName}>Henrique Teixeira Cesar</Text>
-      <Text style={styles.userRm}>RM: 563088</Text>
+      <Text style={styles.nomeAluno}>Henrique Teixeira Cesar</Text>
+      <Text style={styles.rmAluno}>RM: 563088</Text>
 
-      <View style={styles.infoCard}>
-        <Text style={styles.cardHeader}>DETALHES DA CONTA</Text>
-        <Text style={styles.infoText}>Curso: {user.curso}</Text>
-        <Text style={styles.infoText}>Telefone: {user.telefone}</Text>
-        <Text style={styles.infoText}>CPF: {user.cpf}</Text>
+      <View style={styles.cardInfo}>
+        <Text style={styles.labelHeader}>DADOS REGISTRADOS</Text>
+
+        <View style={styles.itemInfo}>
+          <Text style={styles.info}>Curso: {user.curso}</Text>
+        </View>
+        <View style={styles.divisor} />
+
+        <View style={styles.itemInfo}>
+          <Text style={styles.info}>Telefone: {user.telefone}</Text>
+        </View>
+        <View style={styles.divisor} />
+
+        <View style={styles.itemInfo}>
+          <Text style={styles.info}>CPF: {user.cpf}</Text>
+        </View>
       </View>
 
       <TouchableOpacity
-        style={styles.backLink}
+        style={styles.linkVoltar}
         onPress={() => navigation.goBack()}
       >
-        <Text style={styles.backLinkText}>Voltar para edição</Text>
+        <Text style={styles.textoLink}>Voltar</Text>
       </TouchableOpacity>
     </View>
   );
@@ -34,40 +45,63 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#f5f5f5",
     padding: 20,
-    backgroundColor: "#f8f9fa",
   },
-  avatar: {
-    width: 130,
-    height: 130,
-    borderRadius: 65,
-    borderWidth: 4,
+  fotoPerfil: {
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    marginBottom: 15,
+    borderWidth: 3,
     borderColor: "#ed145b",
-    marginTop: 30,
   },
-  userName: {
+  nomeAluno: {
     fontSize: 22,
     fontWeight: "bold",
-    marginTop: 15,
-    color: "#1a1a1a",
+    color: "#333",
   },
-  userRm: { fontSize: 16, color: "#ed145b", fontWeight: "500" },
-  infoCard: {
-    backgroundColor: "#ffffff",
-    padding: 25,
-    borderRadius: 15,
+  rmAluno: {
+    fontSize: 18,
+    color: "#ed145b",
+    marginBottom: 10,
+    fontWeight: "500",
+  },
+  cardInfo: {
     width: "100%",
-    marginTop: 30,
-    elevation: 5,
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 12,
+    elevation: 3,
+    // AQUI VOLTOU A BORDA DA FIAP:
+    borderLeftWidth: 6,
+    borderLeftColor: "#ed145b",
   },
-  cardHeader: {
-    fontWeight: "700",
+  labelHeader: {
+    fontSize: 11,
+    fontWeight: "bold",
     color: "#888",
-    marginBottom: 15,
-    fontSize: 12,
+    marginBottom: 10,
     letterSpacing: 1,
   },
-  infoText: { fontSize: 17, marginBottom: 8, color: "#333" },
-  backLink: { marginTop: 40 },
-  backLinkText: { color: "#ed145b", fontWeight: "600" },
+  itemInfo: {
+    paddingVertical: 12,
+  },
+  info: {
+    fontSize: 16,
+    color: "#444",
+  },
+  divisor: {
+    height: 1,
+    backgroundColor: "#f0f0f0",
+    width: "100%",
+  },
+  linkVoltar: {
+    marginTop: 35,
+  },
+  textoLink: {
+    color: "#ed145b",
+    fontWeight: "bold",
+  },
 });

@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaskedTextInput } from "react-native-mask-text";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function TelaCadastro({ navigation }) {
   const [nome, setNome] = useState("");
@@ -19,106 +20,137 @@ export default function TelaCadastro({ navigation }) {
   const [cpf, setCpf] = useState("");
 
   useEffect(() => {
-    const fetchData = async () => {
+    const carregarDados = async () => {
       try {
-        const storedData = await AsyncStorage.getItem("@dados_usuario");
-        if (storedData) {
-          const parsedData = JSON.parse(storedData);
-          setNome(parsedData.nome);
-          setCurso(parsedData.curso);
-          setTelefone(parsedData.telefone);
-          setCpf(parsedData.cpf);
+        const jsonValue = await AsyncStorage.getItem("@dados_usuario");
+        if (jsonValue != null) {
+          const dados = JSON.parse(jsonValue);
+          setNome(dados.nome);
+          setCurso(dados.curso);
+          setTelefone(dados.telefone);
+          setCpf(dados.cpf);
         }
-      } catch (err) {
-        console.error(err);
+      } catch (e) {
+        console.error(e);
       }
     };
-    fetchData();
+    carregarDados();
   }, []);
 
-  const handleNavigation = async () => {
+  const handleSalvar = async () => {
     if (!nome.trim() || !curso.trim() || !telefone.trim() || !cpf.trim()) {
-      Alert.alert("Erro", "Todos os campos são obrigatórios.");
+      Alert.alert("Atenção", "Preencha todos os campos obrigatórios!");
       return;
     }
 
     if (cpf.length < 14 || telefone.length < 15) {
-      Alert.alert("Erro", "Formato de CPF ou Telefone inválido.");
+      Alert.alert("Erro", "CPF ou Telefone incompletos.");
       return;
     }
 
-    const userData = { nome, curso, telefone, cpf };
+    const usuario = { nome, curso, telefone, cpf };
 
     try {
-      await AsyncStorage.setItem("@dados_usuario", JSON.stringify(userData));
-      navigation.navigate("Perfil", { user: userData });
-    } catch (err) {
-      Alert.alert("Erro", "Erro ao processar as informações.");
+      await AsyncStorage.setItem("@dados_usuario", JSON.stringify(usuario));
+      navigation.navigate("Perfil", { user: usuario });
+    } catch (e) {
+      Alert.alert("Erro", "Não foi possível salvar os dados.");
     }
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <Image source={require("./assets/fiaplogo.png")} style={styles.logo} />
+    <SafeAreaView style={styles.principalProjeto}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Image
+          style={styles.logoFiap}
+          source={require("./assets/fiaplogo.png")}
+        />
 
-      <Text style={styles.header}>Registro de Aluno</Text>
+        <View style={styles.formAluno}>
+          <Text style={styles.tituloPrimario}>Cadastro de Aluno</Text>
 
-      <Text style={styles.label}>Nome Completo</Text>
-      <TextInput style={styles.input} value={nome} onChangeText={setNome} />
+          <Text style={styles.tituloSecundario}>Nome</Text>
+          <TextInput
+            style={styles.textoFormulario}
+            value={nome}
+            onChangeText={setNome}
+            placeholder="Nome completo"
+          />
 
-      <Text style={styles.label}>Curso Atual</Text>
-      <TextInput style={styles.input} value={curso} onChangeText={setCurso} />
+          <Text style={styles.tituloSecundario}>Curso</Text>
+          <TextInput
+            style={styles.textoFormulario}
+            value={curso}
+            onChangeText={setCurso}
+            placeholder="Seu curso"
+          />
 
-      <Text style={styles.label}>Telefone de Contato</Text>
-      <MaskedTextInput
-        mask="(99) 99999-9999"
-        value={telefone}
-        onChangeText={setTelefone}
-        style={styles.input}
-        keyboardType="numeric"
-      />
+          <Text style={styles.tituloSecundario}>Telefone</Text>
+          <MaskedTextInput
+            mask="(99) 99999-9999"
+            value={telefone}
+            onChangeText={setTelefone}
+            style={styles.textoFormulario}
+            keyboardType="numeric"
+          />
 
-      <Text style={styles.label}>CPF</Text>
-      <MaskedTextInput
-        mask="999.999.999-99"
-        value={cpf}
-        onChangeText={setCpf}
-        style={styles.input}
-        keyboardType="numeric"
-      />
+          <Text style={styles.tituloSecundario}>CPF</Text>
+          <MaskedTextInput
+            mask="999.999.999-99"
+            value={cpf}
+            onChangeText={setCpf}
+            style={styles.textoFormulario}
+            keyboardType="numeric"
+          />
 
-      <TouchableOpacity style={styles.mainButton} onPress={handleNavigation}>
-        <Text style={styles.buttonText}>FINALIZAR CADASTRO</Text>
-      </TouchableOpacity>
-    </ScrollView>
+          <TouchableOpacity
+            style={styles.botaoPrincipal}
+            onPress={handleSalvar}
+          >
+            <Text style={styles.textoBotao}>SALVAR DADOS/CONTINUAR</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 25, backgroundColor: "#ffffff" },
-  logo: { width: 140, height: 60, resizeMode: "contain", alignSelf: "center" },
-  header: {
-    fontSize: 24,
+  principalProjeto: { flex: 1, backgroundColor: "#fff", padding: 20 },
+  logoFiap: {
+    width: 200,
+    height: 100,
+    resizeMode: "contain",
+    alignSelf: "center",
+  },
+  formAluno: { marginBottom: 30 },
+  tituloPrimario: {
+    fontSize: 26,
     fontWeight: "bold",
     color: "#ed145b",
     textAlign: "center",
     marginVertical: 20,
   },
-  label: { fontWeight: "600", marginTop: 15, color: "#444" },
-  input: {
-    borderWidth: 1,
-    borderColor: "#e0e0e0",
-    padding: 12,
-    borderRadius: 10,
-    marginTop: 5,
-    backgroundColor: "#fdfdfd",
+  tituloSecundario: {
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 5,
+    color: "#333",
   },
-  mainButton: {
+  textoFormulario: {
+    borderWidth: 1,
+    borderColor: "#ed145b",
+    padding: 12,
+    marginBottom: 15,
+    borderRadius: 8,
+    backgroundColor: "#fafafa",
+  },
+  botaoPrincipal: {
     backgroundColor: "#ed145b",
-    padding: 16,
-    borderRadius: 10,
-    marginTop: 35,
+    padding: 15,
+    borderRadius: 8,
+    marginTop: 10,
     alignItems: "center",
   },
-  buttonText: { color: "#fff", fontWeight: "bold", fontSize: 16 },
+  textoBotao: { color: "#fff", fontWeight: "bold", fontSize: 16 },
 });
